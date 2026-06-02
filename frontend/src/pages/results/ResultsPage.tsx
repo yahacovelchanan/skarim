@@ -1,39 +1,11 @@
-
-import {
-  Box,
-  Card,
-  Stack,
-  Typography,
-} from "@mui/material";
-
-import {
-  useEffect,
-  useState,
-} from "react";
-
-import {
-  useParams,
-} from "react-router-dom";
-
-import {
-  getSurvey,
-} from "../../services/survey.service";
-
-import {
-  getResponses,
-} from "../../services/response.service";
-
-import MultipleChoiceChart
-  from "../../pages/results/MultipleChoiceChart";
-
-import type {
-  Survey,
-  Question,
-} from "../../types/survey";
-
-import type {
-  Answer,
-} from "../../types/response";
+import {Box,Card,Stack,Typography,} from "@mui/material";
+import {useEffect,useState,} from "react";
+import {useParams,} from "react-router-dom";
+import {getSurvey} from "../../services/survey.service";
+import {getResponses,} from "../../services/response.service";
+import MultipleChoiceChart from "../../pages/results/MultipleChoiceChart";
+import type {Survey, Question,} from "../../types/survey";
+import type { Answer,} from "../../types/response";
 
 type SurveyResponse = {
   _id: string;

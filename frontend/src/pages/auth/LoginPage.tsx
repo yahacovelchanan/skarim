@@ -10,7 +10,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 
-import { loginUser } from "../../services/auth,service";
+import { loginUser } from "../../services/auth.service";
 import { setCredentials } from "../../store/slices/authSlice";
 import { useAppDispatch } from "../../hooks/reduxHooks";
 

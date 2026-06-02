@@ -1,239 +1,161 @@
+import { useState } from "react";
+
 import {
   Box,
-  Card,
-  Typography,
+  Button,
+  Paper,
   Stack,
+  TextField,
+  Typography,
 } from "@mui/material";
 
 import {
-  useEffect,
-  useState,
-} from "react";
-
-import {
-  useParams,
+  useNavigate,
 } from "react-router-dom";
 
 import {
-  getSurvey,
-} from "../../services/survey.service";
+  registerUser,
+} from "../../services/auth.service";
 
-import {
-  getResponses,
-} from "../../services/response.service";
+const RegisterPage = () => {
+  const navigate =
+    useNavigate();
 
-import type {
-  Survey,
-  Question,
-} from "../../types/survey";
+  const [username,
+    setUsername] =
+    useState("");
 
-import type {
-  Answer,
-} from "../../types/response";
+  const [password,
+    setPassword] =
+    useState("");
 
-type SurveyResponse = {
-  _id: string;
-  answers: Answer[];
-};
+  const [loading,
+    setLoading] =
+    useState(false);
 
-const ResultsPage =
-  () => {
-    const { id } =
-      useParams<{
-        id: string;
-      }>();
+  const [error,
+    setError] =
+    useState("");
 
-    const [survey,
-      setSurvey] =
-      useState<
-        Survey | null
-      >(null);
+  const handleRegister =
+    async () => {
+      try {
+        setLoading(true);
+        setError("");
 
-    const [responses,
-      setResponses] =
-      useState<
-        SurveyResponse[]
-      >([]);
+        await registerUser(
+          username,
+          password
+        );
 
-    useEffect(() => {
-      if (!id) return;
+        navigate(
+          "/login"
+        );
+      } catch (
+        err: unknown
+      ) {
+        console.log(err);
 
-      const load =
-        async () => {
-          const surveyData =
-            await getSurvey(
-              id
-            );
-
-          const responsesData =
-            await getResponses(
-              id
-            );
-
-          setSurvey(
-            surveyData
+        if (
+          err instanceof Error
+        ) {
+          setError(
+            err.message
           );
-
-          setResponses(
-            responsesData
+        } else {
+          setError(
+            "Registration failed"
           );
-        };
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
 
-      load();
-    }, [id]);
-
-    if (!survey) {
-      return (
-        <div>
-          Loading...
-        </div>
-      );
-    }
-
-    return (
-      <Box
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent:
+          "center",
+        alignItems:
+          "center",
+        minHeight:
+          "100vh",
+      }}
+    >
+      <Paper
+        elevation={5}
         sx={{
-          maxWidth: 900,
-          mx: "auto",
-          p: 4,
+          p: 5,
+          width: 420,
+          borderRadius: 4,
         }}
       >
-        <Typography
-          variant="h3"
-          sx={{
-            mb: 4,
-          }}
-        >
-          Results
-        </Typography>
+        <Stack spacing={3}>
+          <Typography
+            variant="h4"
+            sx={{
+              fontWeight:
+                700,
+            }}
+          >
+            Register
+          </Typography>
 
-        <Typography
-          variant="h5"
-          sx={{
-            mb: 4,
-          }}
-        >
-          {responses.length}
-          {" "}
-          Responses
-        </Typography>
-
-        <Stack
-          spacing={3}
-        >
-          {survey.questions.map(
-            (
-              question:
-                Question
-            ) => {
-              const answers =
-                responses.flatMap(
-                  (
-                    response
-                  ) =>
-                    response.answers.filter(
-                      (
-                        a
-                      ) =>
-                        a.questionId ===
-                        question.id
-                    )
-                );
-
-              return (
-                <Card
-                  key={
-                    question.id
-                  }
-                  sx={{
-                    p: 3,
-                  }}
-                >
-                  <Typography
-                    variant="h6"
-                  >
-                    {
-                      question.title
-                    }
-                  </Typography>
-
-                  {/* MULTIPLE CHOICE */}
-                  {question.type ===
-                    "multiple_choice" && (
-                    <Stack
-                      sx={{
-                        mt: 2,
-                      }}
-                    >
-                      {question.options.map(
-                        (
-                          opt
-                        ) => {
-                          const count =
-                            answers.filter(
-                              (
-                                a
-                              ) =>
-                                a.answer ===
-                                opt
-                            ).length;
-
-                          return (
-                            <Typography
-                              key={
-                                opt
-                              }
-                            >
-                              {
-                                opt
-                              }
-                              :
-                              {" "}
-                              {
-                                count
-                              }
-                            </Typography>
-                          );
-                        }
-                      )}
-                    </Stack>
-                  )}
-
-                  {/* SHORT TEXT */}
-                  {question.type ===
-                    "short_text" && (
-                    <Stack
-                      sx={{
-                        mt: 2,
-                      }}
-                    >
-                      {answers.map(
-                        (
-                          a,
-                          i
-                        ) => (
-                          <Typography
-                            key={
-                              i
-                            }
-                          >
-                            •
-                            {" "}
-                            {
-                              a.answer
-                            }
-                          </Typography>
-                        )
-                      )}
-                    </Stack>
-                  )}
-                </Card>
-              );
+          <TextField
+            label="Username"
+            value={username}
+            onChange={(e) =>
+              setUsername(
+                e.target.value
+              )
             }
-          )}
-        </Stack>
-      </Box>
-    );
-  };
+            fullWidth
+          />
 
-export default ResultsPage;
+          <TextField
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(e) =>
+              setPassword(
+                e.target.value
+              )
+            }
+            fullWidth
+          />
+
+          {error && (
+            <Typography color="error">
+              {error}
+            </Typography>
+          )}
+
+          <Button
+            variant="contained"
+            size="large"
+            onClick={
+              handleRegister
+            }
+            disabled={loading}
+          >
+            Register
+          </Button>
+
+          <Button
+            onClick={() =>
+              navigate(
+                "/login"
+              )
+            }
+          >
+            Already have an account?
+          </Button>
+        </Stack>
+      </Paper>
+    </Box>
+  );
+};
+
+export default RegisterPage;

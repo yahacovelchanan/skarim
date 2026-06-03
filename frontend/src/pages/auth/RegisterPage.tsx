@@ -1,21 +1,7 @@
 import { useState } from "react";
-
-import {
-  Box,
-  Button,
-  Paper,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-
-import {
-  useNavigate,
-} from "react-router-dom";
-
-import {
-  registerUser,
-} from "../../services/auth.service";
+import {Box,Button,Paper,Stack,TextField, Typography} from "@mui/material";
+import {useNavigate} from "react-router-dom";
+import {registerUser} from "../../services/auth.service";
 
 const RegisterPage = () => {
   const navigate =

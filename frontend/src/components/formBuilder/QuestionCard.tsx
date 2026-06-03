@@ -1,23 +1,7 @@
-import {
-  Card,
-  TextField,
-  Stack,
-  IconButton,
-  Switch,
-  Typography,
-  MenuItem,
-  Divider,
-} from "@mui/material";
-
+import {Card,TextField, Stack,IconButton, Switch,Typography,MenuItem,Divider} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-
-import OptionEditor
-  from "./OptionEditor";
-
-import type {
-  Question,
-  QuestionType,
-} from "../../types/survey";
+import OptionEditor from "./OptionEditor";
+import type {Question,QuestionType} from "../../types/survey";
 
 type Props = {
   question: Question;

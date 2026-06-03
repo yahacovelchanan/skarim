@@ -1,12 +1,7 @@
 import { useEffect } from "react";
-
 import api from "../api/axios";
-
 import { setCredentials } from "../store/slices/authSlice";
-
-import {
-  useAppDispatch,
-} from "./reduxHooks";
+import {useAppDispatch} from "./reduxHooks";
 
 const useAuthInit = () => {
   const dispatch =

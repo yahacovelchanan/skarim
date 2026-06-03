@@ -1,15 +1,5 @@
-import {
-  Card,
-  Typography,
-} from "@mui/material";
-
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import {Card,Typography} from "@mui/material";
+import {PieChart,Pie,Cell,Tooltip,ResponsiveContainer} from "recharts";
 
 type Props = {
   title: string;

@@ -1,43 +1,10 @@
-
-import {
-  Box,
-  Button,
-  Card,
-  Typography,
-  TextField,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-  Checkbox,
-  Stack,
-} from "@mui/material";
-
-import {
-  useEffect,
-  useState,
-} from "react";
-
-import {
-  useParams,
-} from "react-router-dom";
-
-import {
-  getSurvey,
-  getSurveyBySlug,
-} from "../../services/survey.service";
-
-import {
-  submitResponse,
-} from "../../services/response.service";
-
-import type {
-  Survey,
-  Question,
-} from "../../types/survey";
-
-import type {
-  Answer,
-} from "../../types/response";
+import { Box,Button,Card,Typography, TextField,RadioGroup,FormControlLabel,Radio,Checkbox,Stack,} from "@mui/material";
+import {useEffect,useState,} from "react";
+import {useParams,} from "react-router-dom";
+import {getSurvey,getSurveyBySlug,} from "../../services/survey.service";
+import {submitResponse,} from "../../services/response.service";
+import type {Survey,Question,} from "../../types/survey";
+import type {Answer,} from "../../types/response";
 
 const FormViewPage =
   () => {

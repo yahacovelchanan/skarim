@@ -1,33 +1,8 @@
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  Typography,
-  Stack,
-  Card,
-} from "@mui/material";
-
-import {
-  useEffect,
-  useState,
-} from "react";
-
-import {
-  useNavigate,
-} from "react-router-dom";
-
-import {
-  createSurvey,
-  getMySurveys,
-} from "../../services/survey.service";
-
-import type {
-  Survey,
-} from "../../types/survey";
+import {Box,Button,Dialog,DialogTitle,DialogContent,DialogActions,TextField,Typography,Stack,Card,} from "@mui/material";
+import {useEffect,useState,} from "react";
+import { useNavigate} from "react-router-dom";
+import {createSurvey, getMySurveys} from "../../services/survey.service";
+import type {Survey} from "../../types/survey";
 
 const DashboardPage =
   () => {

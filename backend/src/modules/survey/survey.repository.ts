@@ -13,12 +13,16 @@ export const getSurveyRepo =
   };
 
 export const updateSurveyRepo =
-  (id: string, data: Partial<ISurvey>) => {
+  (
+    id: string,
+    data: Partial<ISurvey>
+  ) => {
     return Survey.findByIdAndUpdate(
       id,
       data,
-      { returnDocument: "after",
-        runValidators: true
+      {
+        new: true,
+        runValidators: true,
       }
     );
   };

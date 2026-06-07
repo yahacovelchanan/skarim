@@ -5,6 +5,10 @@ export interface ISurvey {
   description: string;
   slug: string;
   createdBy: string;
+  version?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+
   questions: {
     id: string;
     type:
@@ -93,6 +97,11 @@ const surveySchema =
           type: Boolean,
           default: true,
         },
+      },
+
+      version: {
+        type: Number,
+        default: 1,
       },
 
       questions: [

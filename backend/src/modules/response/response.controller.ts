@@ -1,33 +1,81 @@
-import { Request, Response } from "express";
-import { Response as ResponseModel } from "../models/response.model";
+import { Request, Response }from "express";
+import { Response as ResponseModel }from "../models/response.model";
+import { Survey } from "../models/survey.model";
 
-export const submitResponse = async (
-  req: Request,
-  res: Response
-) => {
-  try {
-    const { surveyId, answers } = req.body;
-    const ipRaw =
-      req.headers["x-forwarded-for"] ||
-      req.socket.remoteAddress;
+export const submitResponse =
+  async (
+    req: Request,
+    res: Response
+  ) => {
+    try {
+      const {
+        surveyId,
+        answers,
+      } = req.body;
 
-    const ip = Array.isArray(ipRaw)
-      ? ipRaw[0]
-      : ipRaw || "unknown";
+      const forwarded =
+        req.headers[
+          "x-forwarded-for"
+        ];
 
-    const result = await ResponseModel.create({
-      surveyId,
-      answers,
-      ip,
-    });
+      const ip =
+        typeof forwarded ===
+        "string"
+          ? forwarded
+          : req.socket
+              .remoteAddress ||
+            "unknown";
 
-    res.json(result);
-  } catch {
-    res.status(500).json({
-      error: "Failed to submit response",
-    });
-  }
-};
+      const survey =
+        await Survey.findById(
+          surveyId
+        );
+
+      if (!survey) {
+        return res
+          .status(404)
+          .json({
+            error:
+              "Survey not found",
+          });
+      }
+
+      const existingResponse =
+        await ResponseModel.findOne({
+          surveyId,
+          ip,
+          surveyVersion:
+           survey.version,
+        });
+
+      if (
+        existingResponse
+      ) {
+        return res
+          .status(400)
+          .json({
+            error:
+              "You already answered this survey",
+          });
+      }
+
+      const result =
+        await ResponseModel.create({
+          surveyId,
+          answers,
+          ip,
+          surveyVersion:
+            survey.version,
+        });
+
+      res.json(result);
+    } catch {
+      res.status(500).json({
+        error:
+          "Failed to submit response",
+      });
+    }
+  };
 
 
 export const getSurveyResponses = async (

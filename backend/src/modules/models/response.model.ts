@@ -11,6 +11,10 @@ const responseSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    surveyVersion: {
+      type: Number,
+      required: true,
+    },
 
     answers: [
       {

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import api from "../api/axios";
 import { setCredentials } from "../store/slices/authSlice";
-import {useAppDispatch} from "./reduxHooks";
+import { useAppDispatch } from "./reduxHooks";
 
 const useAuthInit = () => {
   const dispatch =
@@ -15,19 +15,11 @@ const useAuthInit = () => {
             await api.get(
               "/auth/refresh"
             );
-            localStorage.setItem(
-             "accessToken",
-              response.data.accessToken
-            );
 
           dispatch(
             setCredentials({
               user:
-                response.data
-                  .user,
-              accessToken:
-                response.data
-                  .accessToken,
+                response.data.user,
             })
           );
         } catch {

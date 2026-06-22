@@ -1,5 +1,12 @@
 import { useState } from "react";
-import {Box,Button,Paper,Stack,TextField,Typography} from "@mui/material";
+import {
+  Box,
+  Button,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../services/auth.service";
 import { setCredentials } from "../../store/slices/authSlice";
@@ -32,23 +39,16 @@ const LoginPage = () => {
           password
         );
 
-        localStorage.setItem(
-          "accessToken",
-           response.accessToken
-        );
-
       dispatch(
         setCredentials({
           user: response.user,
-          accessToken:
-            response.accessToken,
         })
       );
 
       navigate("/");
     } catch (err) {
-        console.log(err);
-        
+      console.log(err);
+
       setError(
         "Invalid username or password"
       );
@@ -59,14 +59,14 @@ const LoginPage = () => {
 
   return (
     <Box
-  component="div"
-  sx={{
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    minHeight: "100vh",
-  }}
->
+      component="div"
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+      }}
+    >
       <Paper
         elevation={5}
         sx={{
@@ -77,9 +77,9 @@ const LoginPage = () => {
       >
         <Stack spacing={3}>
           <Typography
-          variant="h4"
-          sx={{ fontWeight: 700 }}
-        >
+            variant="h4"
+            sx={{ fontWeight: 700 }}
+          >
             Login
           </Typography>
 

@@ -17,5 +17,6 @@ export interface Survey {
   title: string;
   description?: string;
   slug: string;
+  version: number;
   questions: Question[];
 }

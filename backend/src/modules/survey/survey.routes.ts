@@ -1,21 +1,15 @@
-import {
-  Router,
-} from "express";
-
-import {
-  authMiddleware,
-} from "../middleware/auth.middleware";
-
+import { Router } from "express";
+import { authMiddleware } from "../middleware/auth.middleware";
 import {
   createSurveyController,
   updateSurveyController,
   getSurveyController,
   getSurveyBySlugController,
-  getMySurveysController
+  getMySurveysController,
+  deleteSurveyController,
 } from "./survey.controller";
 
-const router =
-  Router();
+const router = Router();
 
 /* CREATE SURVEY */
 router.post(
@@ -24,6 +18,7 @@ router.post(
   createSurveyController
 );
 
+/* GET MY SURVEYS */
 router.get(
   "/my",
   authMiddleware,
@@ -48,6 +43,13 @@ router.patch(
   "/:id",
   authMiddleware,
   updateSurveyController
+);
+
+/* DELETE SURVEY */
+router.delete(
+  "/:id",
+  authMiddleware,
+  deleteSurveyController
 );
 
 export default router;

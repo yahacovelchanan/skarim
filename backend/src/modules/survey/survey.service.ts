@@ -1,16 +1,15 @@
 import { randomUUID } from "crypto";
 import slugify from "slugify";
-import { createSurveyRepo }
-from "./survey.repository";
-
 import {
+  createSurveyRepo,
   getSurveyRepo,
-  updateSurveyRepo,
-  getSurveyBySlugRepo
+  updateSurveyByOwnerRepo,
+  deleteSurveyByOwnerRepo,
+  getSurveyBySlugRepo,
 } from "./survey.repository";
-
 import { ISurvey } from "../models/survey.model";
 import { Survey } from "../models/survey.model";
+import { Response as ResponseModel } from "../models/response.model";
 
 export const getSurvey =
   async (id: string) => {
@@ -20,14 +19,37 @@ export const getSurvey =
 export const updateSurvey =
   async (
     id: string,
+    userId: string,
     data: Partial<ISurvey>
   ) => {
-    return updateSurveyRepo(
+    return updateSurveyByOwnerRepo(
       id,
+      userId,
       data
     );
   };
 
+export const deleteSurvey =
+  async (
+    id: string,
+    userId: string
+  ) => {
+    const deletedSurvey =
+      await deleteSurveyByOwnerRepo(
+        id,
+        userId
+      );
+
+    if (!deletedSurvey) {
+      return null;
+    }
+
+    await ResponseModel.deleteMany({
+      surveyId: id,
+    });
+
+    return deletedSurvey;
+  };
 const createSlug = (
   title: string
 ) => {
@@ -38,17 +60,12 @@ const createSlug = (
       strict: true,
       locale: "en",
     }
-  )}-${randomUUID()
-    .slice(0, 6)}`;
+  )}-${randomUUID().slice(0, 6)}`;
 };
 
 export const getSurveyBySlug =
-  async (
-    slug: string
-  ) => {
-    return getSurveyBySlugRepo(
-      slug
-    );
+  async (slug: string) => {
+    return getSurveyBySlugRepo(slug);
   };
 
 export const createSurvey =
@@ -60,28 +77,19 @@ export const createSurvey =
     const slug =
       createSlug(title);
 
-    return createSurveyRepo(
-      {
-        title,
-        description,
-        slug,
-        createdBy:
-          userId,
-
-        questions: [],
-      }
-    );
+    return createSurveyRepo({
+      title,
+      description,
+      slug,
+      createdBy: userId,
+      questions: [],
+    });
   };
 
- 
-
 export const getMySurveys =
-  async (
-    userId: string
-  ) => {
+  async (userId: string) => {
     return Survey.find({
-      createdBy:
-        userId,
+      createdBy: userId,
     }).sort({
       createdAt: -1,
     });

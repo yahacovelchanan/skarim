@@ -13,7 +13,6 @@ const AppRouter = () => {
       <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>}/>
       <Route path="/builder/:id" element={<ProtectedRoute><FormBuilderPage /></ProtectedRoute>}/>
       <Route path="/results/:id" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>}/>
-      <Route  path="/form/:id" element={<FormViewPage />}/>
       <Route path="/login" element={<LoginPage />}/>
       <Route  path="/register" element={<RegisterPage />}/>
       <Route path="/f/:slug" element={<FormViewPage />}/>

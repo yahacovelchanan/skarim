@@ -61,3 +61,14 @@ export const getSurveyBySlug =
 
     return response.data;
   };
+
+  export const deleteSurvey = async (
+  surveyId: string
+) => {
+  const response =
+    await api.delete(
+      `/surveys/${surveyId}`
+    );
+
+  return response.data;
+};

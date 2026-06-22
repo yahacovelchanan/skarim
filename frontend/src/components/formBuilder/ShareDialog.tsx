@@ -1,4 +1,16 @@
-import {Dialog,DialogTitle,DialogContent, DialogActions, Button, TextField,Stack,Typography} from "@mui/material";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  TextField,
+  Stack,
+  Typography,
+  Snackbar,
+  Alert,
+} from "@mui/material";
+import { useState } from "react";
 
 type Props = {
   open: boolean;
@@ -11,66 +23,85 @@ const ShareDialog = ({
   onClose,
   url,
 }: Props) => {
-  const copyLink =
-  async () => {
-    await navigator.clipboard.writeText(
-      url
-    );
+  const [copiedOpen, setCopiedOpen] =
+    useState(false);
 
-    alert(
-      "Link copied!"
-    );
+  const copyLink = async () => {
+    await navigator.clipboard.writeText(url);
 
-    onClose();
+    setCopiedOpen(true);
+
+    setTimeout(() => {
+      onClose();
+    }, 700);
   };
 
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      fullWidth
-      maxWidth="sm"
-    >
-      <DialogTitle>
-        Survey Saved 🎉
-      </DialogTitle>
+    <>
+      <Dialog
+        open={open}
+        onClose={onClose}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle>
+          Survey Saved 🎉
+        </DialogTitle>
 
-      <DialogContent>
-        <Stack spacing={2}>
-          <Typography>
-            Share this
-            survey:
-          </Typography>
+        <DialogContent>
+          <Stack spacing={2}>
+            <Typography>
+              Share this survey:
+            </Typography>
 
-          <TextField
-            value={url}
-            fullWidth
-            slotProps={{
-              input: {
-                readOnly: true,
-              },
-            }}
-          />
-        </Stack>
-      </DialogContent>
+            <TextField
+              value={url}
+              fullWidth
+              slotProps={{
+                input: {
+                  readOnly: true,
+                },
+              }}
+            />
+          </Stack>
+        </DialogContent>
 
-      <DialogActions>
-        <Button
-          onClick={onClose}
-        >
-          Close
-        </Button>
+        <DialogActions>
+          <Button onClick={onClose}>
+            Close
+          </Button>
 
-        <Button
-          variant="contained"
-          onClick={
-            copyLink
+          <Button
+            variant="contained"
+            onClick={copyLink}
+          >
+            Copy Link
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Snackbar
+        open={copiedOpen}
+        autoHideDuration={2500}
+        onClose={() =>
+          setCopiedOpen(false)
+        }
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+      >
+        <Alert
+          severity="success"
+          variant="filled"
+          onClose={() =>
+            setCopiedOpen(false)
           }
         >
-          Copy Link
-        </Button>
-      </DialogActions>
-    </Dialog>
+          הקישור הועתק בהצלחה
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 
